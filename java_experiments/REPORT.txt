@@ -1,0 +1,73 @@
+Daniel Vinakovsky
+Professor Duchamp
+CS511 ~ Assignment 4
+
+I pledge my honor that I have abided by the Stevens Honor System.
+
+Name of test file     : "enwiki-20151002-pages-articles1.xml"
+Number of pages parsed: 3000
+Number of processors  : 6
+
+TokenCount.java:
+Average execution time: 7812ms
+
+TokenCount1.java:
+Number of consumer threads: 1
+Average execution time: 6656ms
+
+TokenCount2.java:
+Number of consumer threads: 5
+Average execution time: 7400ms
+
+TokenCount3.java:
+Number of consumer threads: 5
+Average execution time: 4348ms
+
+TokenCount4.java:
+Number of consumer threads: 5
+Average execution time: 2819ms
+
+Explanation of the results:
+
+Using the original/provided TokenCount as a baseline, we
+see some interesting results once we start adding different
+levels of concurrency. In TokenCount1, where we implement a
+single producer and a single consumer that operate concurrently, 
+we see already see a measurable performance increase of approximately 
+15%. Such an improvement is not too surprising as TokenCount1, as opposed
+to the original TokenCount, is no longer sequential and thus may have two
+"jobs" (XML parsing/Page object instantiation, and the actual token frequency
+tracking) taking place at the same time. It is no longer the case that the
+XML parsing portion of the program must fully complete before the token counting
+portion is allowed to begin executing!
+
+In TokenCount2, where we have several "consumers" and one producer, we actually
+notice a sharp decrease in performance as compared to TokenCount1! The reason for
+this is that method responsible for actually updating the value of each token in the
+shared HashMap must now be synchronized to ensure the uninterrupted reading and the
+successive updating of the "count" value for a given token (key). It is due to the overhead of 
+needing to "lock" the method each time it is called that TokenCount2 is significantly
+slower than TokenCount1. In effect, any performance benefit potentially gained from having
+a greater number of consumer threads is nullified by the need to synchronize access
+to the shared hashmap data structure.
+
+By utilizing a concurrent hashmap (a data structure that uses per-bucket locking,
+as opposed to needing to lock the entire hashmap upon any access as in TokenCount2),
+we observe a far greater level of concurrency and thus a much better performance
+improvement in TokenCount3. However, when a consumer thread updates a value in the hashmap, it must use
+a modified "countToken" algorithm that takes advantage of certain methods (putIfAbsent(), replace())
+that are unique to the concurrent hashmap to ensure correctness when updating the count.
+This is certainly worth the extra effort as multiple threads can now update
+different keys and their associated values (tokens and their associated counts) simultaneously/
+without waiting for another thread to finish its current operation on the hashmap!
+
+TokenCount4 was rather interesting as I did not at all expect it to be faster than TokenCount3 due to the 
+overhead of keeping a concurrent hashmap in memory for each thread, and then still needing to update 
+the shared concurrent hashmap upon termination. However, as it turns out, this was much faster!
+This is due to the fact that each token in the shared concurrent hashmap only needs to be updated
+~5 times rather than (potentially) thousands of times. While this is still the case for the private
+data structure contained in each thread, the fact that each access is sequential and thus always
+succeeds in updating the data structure on the first try greatly improves the rate at which
+tokens are correctly counted. The end-of-thread merge, in some cases, may also be partially sequential
+in nature as some threads may finish their jobs earlier than others and have non-competing
+access to the shared concurrent hashmap.

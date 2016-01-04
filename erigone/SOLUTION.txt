@@ -1,0 +1,37 @@
+Daniel Vinakovsky
+Professor Duchamp
+CS-511
+December 8, 2015
+
+I pledge my honor that I have abided by the Stevens Honor System.
+
+1a) See part1a.pml
+
+1b) $> erigone -s -dc -lt32  part1a
+
+1c) verification terminated=assert statement is false,line=27,statement={assert(n >= 5 && n <= 10)}
+
+2a) See part2a.pml
+
+2b) $> erigone -s -dc -lt64  part2a 
+
+2c) verification terminated=assert statement is false,line=27,statement={assert(n !=0 && n != 1 && n >= 3 && n <= 10)}
+
+2d) $> erigone -g part2a
+
+2e) See part2e.txt
+
+3a) See part3a.pml
+
+3b) $> erigone -s -dcr -lt64 part3a
+
+3c) verification terminated=successfully, steps=8530
+	Note: This means no assertions of n==10 failed, which is what we want.
+
+4a) See part4a.pml
+
+4b) $> erigone -s -dcr -lt100000 part4a
+
+4c) verification terminated=successfully, steps=10186576
+	Note: This means all of the assertion statements evaluated to true, thus
+	there was a maximum of 1 cart in the intersection at any given moment.

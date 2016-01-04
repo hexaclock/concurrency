@@ -1,0 +1,12 @@
+Mark Mirtchouk & Daniel Vinakovsky
+Professor Duchamp
+CS511
+Assignment #5
+
+I pledge my honor that I have abided by the Stevens Honor System.
+
+To the TA or grader -
+
+   You can compile and run our submission with the following:
+   "erlc sensor.erl watcher.erl; erl +P 262144 -noshell -s watcher main" - this should work with at least 100,000 processes.
+   **Press Ctrl+C to abort as the assignment implies this system should never stop on its own**

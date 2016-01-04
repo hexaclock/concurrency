@@ -1,0 +1,21 @@
+Hi!
+
+--To build + run TokenCount (provided by Prof. Duchamp):
+javac TokenCount.java; java TokenCount <numpages> <xmlfile>
+
+--To build + run TokenCount1:
+javac TokenCount1.java; java TokenCount1 <numpages> <xmlfile>
+
+--To build + run TokenCount2:
+javac TokenCount2.java; java TokenCount2 <numpages> <xmlfile>
+
+--To build + run TokenCount3:
+javac TokenCount3.java; java TokenCount3 <numpages> <xmlfile>
+
+--To build + run TokenCount4:
+javac TokenCount4.java; java TokenCount4 <numpages> <xmlfile>
+
+*Alternatively, you can use the "make re" command to build all
+versions at once.*
+
+~Daniel Vinakovsky
